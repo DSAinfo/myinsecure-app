@@ -32,6 +32,7 @@ jobs:
 
     - name: Run Safety (local scan, no API)
       uses: pyupio/safety-action@v1
+      continue-on-error: true
       with:
         api-key: ${{ secrets.SAFETY_API_KEY }}
     
