@@ -10,7 +10,9 @@ jobs:
   security-checks:
     name: Static & Dependency Security Scans
     runs-on: ubuntu-latest
-
+    env:
+      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+  
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -42,9 +44,8 @@ jobs:
         bandit -r . || true
 
     - name: Run Semgrep
-      run: |
-        curl -sL https://semgrep.dev/install.sh | bash
-        ./semgrep/semgrep --config auto --exclude .venv || true
+      uses: actions/checkout@v4
+      run: semgrep ci
 
   test:
     name: Run Tests
