@@ -31,10 +31,10 @@ jobs:
         pip-audit || echo "PIP Audit failed, continuing anyway"
 
     - name: Run Safety (local scan, no API)
-      run: |
-        pip install safety
-        safety scan -r requirements.txt || exit 1
-
+      uses: pyupio/safety-action@v1
+      with:
+        api-key: ${{ secrets.SAFETY_API_KEY }}
+    
     - name: Run Bandit
       run: |
         pip install bandit
