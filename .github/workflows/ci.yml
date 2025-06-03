@@ -41,15 +41,20 @@ jobs:
         pip install bandit
         bandit -r . || true
 
-    - name: Run Semgrep (container)
-      continue-on-error: true
+    - name: Run Semgrep with SARIF output
       uses: addnab/docker-run-action@v3
+      continue-on-error: true
       with:
         image: semgrep/semgrep
-        options: -e SEMGREP_APP_TOKEN=${{ secrets.SEMGREP_APP_TOKEN }}
+        options: -e SEMGREP_APP_TOKEN=${{ secrets.SEMGREP_APP_TOKEN }} -v ${{ github.workspace }}:/src -w /src
         run: |
-          semgrep ci
-          
+          semgrep ci --sarif > semgrep.sarif || true
+
+    - name: Upload Semgrep SARIF report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: semgrep.sarif
+
   test:
     name: Run Tests
     needs: security-checks
