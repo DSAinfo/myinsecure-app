@@ -30,10 +30,10 @@ jobs:
         pip install pip-audit
         pip-audit || echo "PIP Audit failed, continuing anyway"
 
-    - name: Run Safety
+    - name: Run Safety (local scan, no API)
       run: |
         pip install safety
-        safety check --full-report || exit 1
+        safety scan -r requirements.txt || exit 1
 
     - name: Run Bandit
       run: |
