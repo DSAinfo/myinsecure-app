@@ -43,7 +43,7 @@ jobs:
 
     - name: Run Semgrep
       run: |
-        curl -sL https://semgrep.dev/install.sh | sh
+        curl -sL https://semgrep.dev/install.sh | bash
         ./semgrep/semgrep --config auto --exclude .venv || true
 
   test:
